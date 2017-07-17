@@ -1,0 +1,24 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+MQTT_PASSWORD	config.h	/^const char* MQTT_PASSWORD = "ChawaDheN";           \/\/MQTT Broker Password$/;"	v
+MQTT_PUBLISH_TOPIC	config.h	/^const char* MQTT_PUBLISH_TOPIC = "nextion-out";     \/\/Topic name to publish on mqtt$/;"	v
+MQTT_SERVER	config.h	/^const char* MQTT_SERVER = "192.168.0.30";          \/\/IP Adress of Machine running MQTT Broker$/;"	v
+MQTT_SUBSCRIBE_TOPIC	config.h	/^const char* MQTT_SUBSCRIBE_TOPIC = "nextion-in";    \/\/Topic to subscribe at mqtt for message reception$/;"	v
+MQTT_USER	config.h	/^const char* MQTT_USER = "pi";                      \/\/MQTT Broker User Name$/;"	v
+SKETCH_ID	config.h	/^const char* SKETCH_ID = "nextion";                  \/\/Non-overlaping name of sketch$/;"	v
+SKETCH_VERSION	config.h	/^const char* SKETCH_VERSION = "0.1";                \/\/Sketch version$/;"	v
+WIFI_PASSWORD	config.h	/^const char* WIFI_PASSWORD = "bukvyras";$/;"	v
+WIFI_SSID	config.h	/^const char* WIFI_SSID = "prapisai_gulta";$/;"	v
+db_array_default_value	config.h	/^int db_array_default_value = 0;                    \/\/default value to write in database e.g. default gpio state$/;"	v
+db_array_value	init.h	/^unsigned long db_array_value[20];$/;"	v
+espClient	init.h	/^WiFiClient espClient;$/;"	v
+mqtt_reconnect_time	init.h	/^long mqtt_reconnect_time = 0L;$/;"	v
+mqtt_reconnect_tries	init.h	/^int mqtt_reconnect_tries = 0;$/;"	v
+scheduled_reboot	init.h	/^boolean scheduled_reboot = false;$/;"	v
+wifi_check_time	init.h	/^long wifi_check_time = 15000L;$/;"	v
+wifi_reconnect_time	init.h	/^long wifi_reconnect_time = 0L;$/;"	v
+wifi_reconnect_tries	init.h	/^int wifi_reconnect_tries = 0;$/;"	v
