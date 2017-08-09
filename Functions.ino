@@ -165,49 +165,59 @@
 
 
 
-    uint8_t PCF_read8()
+    uint8_t PCF_read8(uint8_t address)
     {
-      Wire.beginTransmission(PCF_ADDRESS);
-      Wire.requestFrom(PCF_ADDRESS, 1);
+      Wire.beginTransmission(address);
+      Wire.requestFrom(address, 1);
       uint8_t _data = Wire.read();
       Wire.endTransmission();
       return _data;
     }
 
-    void PCF_write8(uint8_t value)
+    void PCF_write8(uint8_t address,uint8_t value)
     {
-      Wire.beginTransmission(PCF_ADDRESS);
+      Wire.beginTransmission(address);
       Wire.write(value);
       Wire.endTransmission();
     }
 
     uint8_t PCF_toggle(uint8_t pin)
     {
-      uint8_t _data = PCF_read8();
+      uint8_t _data = PCF_read8(PCF_OUT_ADDRESS);
       _data ^=  (1 << pin);
-      PCF_write8(_data); 
+      PCF_write8(PCF_OUT_ADDRESS,_data); 
       return _data>>pin&0x01;
     }
 
 
     void PCF_write(uint8_t pin, uint8_t val)
     {
-      uint8_t _data = PCF_read8();
+      uint8_t _data = PCF_read8(PCF_OUT_ADDRESS);
       if(val)
       _data |=  (1 << pin);
       else
       _data &=  ~(1 << pin);
-      PCF_write8(_data); 
+      PCF_write8(PCF_OUT_ADDRESS,_data); 
     }
 
 
-    uint8_t PCF_read(uint8_t pin)
+    uint8_t PCF_read(uint8_t address, uint8_t pin)
     {
-      uint8_t _data = PCF_read8();
+      uint8_t _data = PCF_read8(address);
       return (_data>>pin)&0x01;
     }
 
 
+uint8_t PCF_detect_low_pin(){
+    uint8_t data = PCF_read8(PCF_IN_ADDRESS);
+    for(uint8_t i = 0; i<8; i++){
+        if(data & (0x01<<i))
+            return i;
+    }
+
+    return 8;
+
+    }
 
 
 void tcp_listen(){
@@ -218,9 +228,21 @@ void tcp_listen(){
     } else {
         // read data from the connected client
         if (wifi_client.available() > 0) {
+        char buf [4];
+        char req = wifi_client.read();
             /*Serial.write(wifi_client.read());*/
-            if(wifi_client.read() == 'L'){
+            if(req == 'L'){
                 wifi_client.write(PCF_toggle(wifi_client.read()-48)+48);
+                wifi_client.write('\n');
+            }
+            if(req == 'H'){
+                sprintf (buf, "%d", humidity);
+                wifi_client.write((const char*)&buf[0],(size_t)(2));
+                wifi_client.write('\n');
+            }
+            if(req == 'T'){
+                sprintf (buf, "%d", temp);
+                wifi_client.write((const char*)&buf[0],(size_t)(2));
                 wifi_client.write('\n');
             }
         }

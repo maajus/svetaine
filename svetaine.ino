@@ -39,6 +39,8 @@ SoftwareSerial HMISerial(SW_SER_RX,SW_SER_TX);  // RX,TX  see NexConfig.h - usin
 String db_array[] = {"Reboot", "q0", "q1", "q2", "q3"};
 int db_array_len = 5;
 char buffer[100] = {0};
+int humidity = -1;
+int temp = -1;
 
 //vars to save buttons state
 bool NexFanA_state = false;
@@ -131,22 +133,15 @@ void NexFanBPushCallback(void *ptr)
 void setup() {
 
     boot();     //necessary to call at first during setup function for proper functioning
-    pinMode(B0, INPUT_PULLUP);
-    pinMode(B1, INPUT_PULLUP);
-    pinMode(B2, INPUT_PULLUP);
-    pinMode(B3, INPUT_PULLUP);
-    pinMode(B4, INPUT);
+    pinMode(INT_PIN, INPUT_PULLUP);
 
-    attachInterrupt(B0, interrupt1, FALLING);
-    attachInterrupt(B1, interrupt2, FALLING);
-    attachInterrupt(B2, interrupt2, FALLING);
-    attachInterrupt(B3, interrupt3, CHANGE);
-    attachInterrupt(B4, interrupt4, FALLING);
+    attachInterrupt(INT_PIN, interrupt, FALLING);
 
     timer.setInterval(35000, update_info);//set timer for updating temp
     Wire.begin(SDA_PIN,SCL_PIN);//start i2c
     /*PCF_write8(0); //all ssr off*/
-    PCF_write8(0xFF); //all ssr off*/
+    PCF_write8(PCF_IN_ADDRESS,0x0); //all ssr off*/
+    PCF_write8(PCF_OUT_ADDRESS,0x0); //all ssr off*/
     /*PCF_read8();*/
 
 
@@ -175,6 +170,7 @@ void setup() {
         delay(1000);
     }
     Serial.println("");
+    update_info();
 }
 
 
@@ -185,83 +181,35 @@ void loop()
 {
     timer.run();
     tcp_listen();
-   
 
-  /*keeplive();   //necessary to call keep alive for proper functioning*/
-  nexLoop(nex_listen_list);
-
-    /*PCF_toggle(0);*/
-    /*PCF_toggle(1);*/
-    /*PCF_toggle(2);*/
-    /*PCF_toggle(3);*/
+    /*keeplive();   //necessary to call keep alive for proper functioning*/
+    nexLoop(nex_listen_list);
 
 }
 
 
-void interrupt0(){
-    static unsigned long last_interrupt_time = 0;
-    unsigned long interrupt_time = millis();
+void interrupt(){
 
-    if (interrupt_time - last_interrupt_time > 200) 
-    {
-        Serial.println("interrupt0");
-    }
-    last_interrupt_time = interrupt_time; 
+    uint8_t pin_num = PCF_detect_low_pin();
+    if(pin_num == 8) return;
+
+    PCF_toggle(pin_num);
+
 }
 
 
-void interrupt1(){
 
-    static unsigned long last_interrupt_time = 0;
-    unsigned long interrupt_time = millis();
+    /*static unsigned long last_interrupt_time = 0;*/
+    /*unsigned long interrupt_time = millis();*/
 
-    if (interrupt_time - last_interrupt_time > 200) 
-    {
-        Serial.println("interrupt1");
-    }
-    last_interrupt_time = interrupt_time; 
-}
-
-
-void interrupt2(){
-
-    static unsigned long last_interrupt_time = 0;
-    unsigned long interrupt_time = millis();
-
-    if (interrupt_time - last_interrupt_time > 200) 
-    {
-        Serial.println("interrupt2");
-    }
-    last_interrupt_time = interrupt_time; 
-}
-
-void interrupt3(){
-
-        Serial.println("interrupt3");
-        return;
-
-    static unsigned long last_interrupt_time = 0;
-    unsigned long interrupt_time = millis();
-
-    if (interrupt_time - last_interrupt_time > 200) 
-    {
-        Serial.println("interrupt3");
-    }
-    last_interrupt_time = interrupt_time; 
-}
+    /*if (interrupt_time - last_interrupt_time > 200) */
+    /*{*/
+        /*Serial.println("interrupt0");*/
+    /*}*/
+    /*last_interrupt_time = interrupt_time; */
+/*}*/
 
 
-void interrupt4(){
-
-    static unsigned long last_interrupt_time = 0;
-    unsigned long interrupt_time = millis();
-
-    if (interrupt_time - last_interrupt_time > 200) 
-    {
-        Serial.println("interrupt4");
-    }
-    last_interrupt_time = interrupt_time; 
-}
 
 void update_info(){
 
@@ -279,19 +227,19 @@ void update_info(){
 
 
 
-  int h = dht.readHumidity();
-  int t = dht.readTemperature();
+  humidity = dht.readHumidity();
+  temp = dht.readTemperature();
   /*[>float hic = dht.computeHeatIndex(t, h, false);       <]*/
   // Check if any reads failed and exit early (to try again).
-  if (isnan(h) || isnan(t)) {
+  if (isnan(humidity) || isnan(temp)) {
       Serial.println("Failed to read from DHT sensor!");
   }
   else{
       memset(buffer, 0, sizeof(buffer));
-      snprintf(buffer, 4, "%dC", t);
+      snprintf(buffer, 4, "%dC", temp);
       NexTemp.setText(buffer);
       memset(buffer, 0, sizeof(buffer));
-      snprintf(buffer, 4, "%d%", h);
+      snprintf(buffer, 4, "%d%", humidity);
       NexHumid.setText(buffer);
     }
 
@@ -299,5 +247,5 @@ void update_info(){
 
 /*************************************************************************************************************************
   End of the file
-    *************************************************************************************************************************/
+ *************************************************************************************************************************/
 

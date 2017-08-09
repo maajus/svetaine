@@ -7,16 +7,17 @@ const char* SKETCH_VERSION = "0.1";                //Sketch version
 const char* MQTT_PUBLISH_TOPIC = "nextion-out";     //Topic name to publish on mqtt
 const char* MQTT_SUBSCRIBE_TOPIC = "nextion-in";    //Topic to subscribe at mqtt for message reception
 
-//const char* WIFI_SSID = "Stotis";
-const char* WIFI_SSID = "prapisai_gulta";
-//const char* WIFI_PASSWORD = "turekbabkiu";
-const char* WIFI_PASSWORD = "bukvyras";
+const char* WIFI_SSID = "Stotis";
+//const char* WIFI_SSID = "prapisai_gulta";
+const char* WIFI_PASSWORD = "turekbabkiu";
+//const char* WIFI_PASSWORD = "bukvyras";
 //const char* MQTT_SERVER = "192.168.0.30";          //IP Adress of Machine running MQTT Broker
 //const char* MQTT_USER = "pi";                      //MQTT Broker User Name
 //const char* MQTT_PASSWORD = "ChawaDheN"; ,          //MQTT Broker Password
 
 
-#define PCF_ADDRESS 0x38
+#define PCF_IN_ADDRESS 0x38
+#define PCF_OUT_ADDRESS 0x39
 #define DHTTYPE DHT11   // DHT 11
 #define HOSTNAME "svetaine1"
 #define SDA_PIN 14 
@@ -33,11 +34,7 @@ const char* WIFI_PASSWORD = "bukvyras";
 #define L6 7
 
 
-#define B0 10
-#define B1 9
-#define B2 0
-#define B3 13
-#define B4 15
+#define INT_PIN 13
 // DHT Sensor
 #define DHTPin  2
 
