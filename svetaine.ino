@@ -15,7 +15,7 @@
 *************************************************************************************************************************/
 
 #include <ESP8266WiFi.h>          //builtin library for ESP8266 Arduino Core
-#include <PubSubClient.h>
+#include <PubSubClient.h>j
 #include <SoftwareSerial.h>
 #include "FS.h"                   //builtin library for ESP8266 Arduino Core
 #include "config.h"               //package builtin configuration file
@@ -36,11 +36,9 @@ WiFiClient wifi_client;
 DHT dht(DHTPin, DHTTYPE);
 SimpleTimer timer;
 SoftwareSerial HMISerial(SW_SER_RX,SW_SER_TX);  // RX,TX  see NexConfig.h - using software serial for ESP8266
-String db_array[] = {"Reboot", "q0", "q1", "q2", "q3"};
-int db_array_len = 5;
 char buffer[100] = {0};
-int humidity = -1;
-int temp = -1;
+uint8_t humidity = -1;
+uint8_t temp = -1;
 
 //vars to save buttons state
 bool NexFanA_state = false;
@@ -193,6 +191,8 @@ void interrupt(){
     uint8_t pin_num = PCF_detect_low_pin();
     if(pin_num == 8) return;
 
+    Serial.print("Togle pin : ");
+    Serial.println(pin_num);
     PCF_toggle(pin_num);
 
 }
@@ -227,14 +227,19 @@ void update_info(){
 
 
 
-  humidity = dht.readHumidity();
-  temp = dht.readTemperature();
+  uint8_t Humi = dht.readHumidity();
+  uint8_t Temp = dht.readTemperature();
   /*[>float hic = dht.computeHeatIndex(t, h, false);       <]*/
   // Check if any reads failed and exit early (to try again).
-  if (isnan(humidity) || isnan(temp)) {
+  if (isnan(Humi) || isnan(Temp) || (Humi > 255) || (Temp > 255)) {
       Serial.println("Failed to read from DHT sensor!");
+      humidity = 0;
+      temp = 0;
   }
   else{
+
+      humidity = Temp;
+      temp = Humi;
       memset(buffer, 0, sizeof(buffer));
       snprintf(buffer, 4, "%dC", temp);
       NexTemp.setText(buffer);
