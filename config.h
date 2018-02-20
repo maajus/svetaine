@@ -18,7 +18,7 @@ const char* WIFI_PASSWORD = "turekbabkiu";
 
 #define PCF_IN_ADDRESS 0x38
 #define PCF_OUT_ADDRESS 0x39
-#define DHTTYPE DHT11   // DHT 11
+#define DHTTYPE DHT22   // DHT 11
 #define HOSTNAME "svetaine"
 #define SDA_PIN 14 
 #define SCL_PIN 12

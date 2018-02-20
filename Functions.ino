@@ -190,6 +190,20 @@ uint8_t PCF_toggle(uint8_t pin)
     return (Data>>pin)&0x01;
 }
 
+uint8_t PCF_toggle_all(uint8_t pin)
+{
+    /*uint8_t Data = PCF_read8(PCF_OUT_ADDRESS);*/
+    if(pin == 1)
+        Data = 0xff;
+    else Data = 0;
+
+    PCF_write8(PCF_OUT_ADDRESS,Data); 
+
+    Serial.print("Write : ");
+    Serial.println(Data);
+    return pin;
+}
+
 
 void PCF_write(uint8_t pin, uint8_t val)
 {
@@ -239,7 +253,7 @@ void tcp_listen(){
             }
             if(req == 'H'){
                 char buf [30];
-                sprintf (buf, "%d", humidity);
+                sprintf (buf, "%2.1f", humidity);
                 wifi_client.write((const char*)&buf[0],(size_t)(2));
                 /*wifi_client.write('\n');*/
                 return;
@@ -247,16 +261,22 @@ void tcp_listen(){
             }
             if(req == 'T'){
                 char buf [30];
-                sprintf (buf, "%d", temp);
+                sprintf (buf, "%2.1f", temp);
                 wifi_client.write((const char*)&buf[0],(size_t)(2));
                 /*wifi_client.write('\n');*/
                 return;
             }
             if(req == 'A'){
                 char buf [30];
-                sprintf (buf, "S%d_%d_%d",
+                sprintf (buf, "S%2.1f_%2.1f_%d",
                         temp,humidity,Data&0xff);
                 wifi_client.write((const char*)&buf[0],(size_t)(30));
+                /*wifi_client.write('\n');*/
+                return;
+            }
+            if(req == 'J'){
+                char buf [30];
+                wifi_client.write(PCF_toggle_all(wifi_client.read()-48));
                 /*wifi_client.write('\n');*/
                 return;
             }
