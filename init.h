@@ -19,4 +19,4 @@ boolean scheduled_reboot = false;
 
 //Instantiate libraries
 WiFiClient espClient;
-PubSubClient client(espClient);
+//PubSubClient client(espClient);

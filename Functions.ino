@@ -2,32 +2,19 @@
   Booting the system
  ******************************/
 void boot()
-{  
+{
     pinMode(16, OUTPUT);
     digitalWrite(16, HIGH);
     Serial.begin(9600);
     //Serial.swap();
     //SPIFFS.begin();
     Serial.println("System started");
-    //  if(!fetchDatabase()) {
-    //    if(!creatDatabase()) {
-    //      Serial.println("Problem generating database file");
-    //      Serial.println("Formating file system");
-    //      if(SPIFFS.format()) {
-    //        Serial.println("Succeeded in formating file system");
-    //        creatDatabase();
-    //      }
-    //    }
-    //  }
-    //client.setServer(MQTT_SERVER, 1883);
-    //client.setCallback(callback);
     WiFi.mode(WIFI_STA);
 }
 
 /***************************
   Keep Aliving Loop
  ***************************/
-
 void keeplive()
 {
     client.loop();
@@ -39,9 +26,9 @@ void keeplive()
     delay(1);
 }
 
-/*************************************************************************************************************************
+/*****************************
   Connect to WiFi network
- *************************************************************************************************************************/
+*****************************/
 
 void connectWiFi()
 {
@@ -84,7 +71,7 @@ void connectWiFi()
             wifi_reconnect_tries = 0;
         } else if ((WiFi.status() != WL_CONNECTED) && (wifi_reconnect_tries > 3)) {
             String this_print = " Failed to connect to " + String(WIFI_SSID) + " Rebooting...";
-            Serial.println(this_print);      
+            Serial.println(this_print);
         }
     } else {
         Serial.print(WIFI_SSID);
@@ -98,42 +85,9 @@ void connectWiFi()
     }
 }
 
-/*************************************************************************************************************************
-  Connect to MQTT Broker
- *************************************************************************************************************************/
-//
-//void connectMQTT()
-//{
-//  if (mqtt_reconnect_tries > 1) {
-//    Serial.print("Retrying:: ");
-//  }
-//  Serial.print("Connecting to mqtt server: ");
-//  Serial.println(MQTT_SERVER);
-//  client.connect(SKETCH_ID, MQTT_USER, MQTT_PASSWORD);
-//  delay(500);
-//  if (client.connected()) {
-//    send("units-bootup", String(SKETCH_ID) + "-bootup"); // Initial system status publish to server
-//    client.subscribe(MQTT_SUBSCRIBE_TOPIC); // Subscribe to your MQTT topic
-//    client.subscribe("subunit-ping"); // Subscribe to Ping
-//    Serial.println(".. Connected!!");
-//    mqtt_reconnect_tries = 0;
-//    scheduled_reboot = false;
-//    updateDatabase(db_array[0], 0);
-//    db_array_value[0] = 0;
-//  } else {
-//
-//    Serial.print("Failed to connect to mqtt server, rc=");
-//    Serial.print(client.state());
-//    Serial.println("");
-//  }
-//}
-
-
-
-
-/*************************************************************************************************************************
+/********************************
   IP Address to String conversion
- *************************************************************************************************************************/
+ *******************************/
 
 String ipToString(IPAddress ip){
     String s="";
@@ -143,9 +97,9 @@ String ipToString(IPAddress ip){
 }
 
 
-/*************************************************************************************************************************
+/******************************
   Formating File System
- *************************************************************************************************************************/
+ ******************************/
 
 void format()
 {
@@ -155,9 +109,9 @@ void format()
     }
 }
 
-/*************************************************************************************************************************
+/*******************************
   Driving output pins
- *************************************************************************************************************************/
+ ******************************/
 
 uint8_t Data = 0;
 
@@ -183,7 +137,7 @@ uint8_t PCF_toggle(uint8_t pin)
     /*uint8_t Data = PCF_read8(PCF_OUT_ADDRESS);*/
 
     Data ^=  1 << pin;
-    PCF_write8(PCF_OUT_ADDRESS,Data); 
+    PCF_write8(PCF_OUT_ADDRESS,Data);
 
     Serial.print("Write : ");
     Serial.println(Data);
@@ -197,7 +151,7 @@ uint8_t PCF_toggle_all(uint8_t pin)
         Data = 0xff;
     else Data = 0;
 
-    PCF_write8(PCF_OUT_ADDRESS,Data); 
+    PCF_write8(PCF_OUT_ADDRESS,Data);
 
     Serial.print("Write : ");
     Serial.println(Data);
@@ -212,7 +166,7 @@ void PCF_write(uint8_t pin, uint8_t val)
         _data |=  (1 << pin);
     else
         _data &=  ~(1 << pin);
-    PCF_write8(PCF_OUT_ADDRESS,_data); 
+    PCF_write8(PCF_OUT_ADDRESS,_data);
 }
 
 
@@ -234,6 +188,9 @@ uint8_t PCF_detect_low_pin(){
 
 }
 
+/*******************************
+ Listen for tcp commands 
+ ******************************/
 
 void tcp_listen(){
 
