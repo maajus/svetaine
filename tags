@@ -4,21 +4,127 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-MQTT_PASSWORD	config.h	/^const char* MQTT_PASSWORD = "ChawaDheN";           \/\/MQTT Broker Password$/;"	v
-MQTT_PUBLISH_TOPIC	config.h	/^const char* MQTT_PUBLISH_TOPIC = "nextion-out";     \/\/Topic name to publish on mqtt$/;"	v
-MQTT_SERVER	config.h	/^const char* MQTT_SERVER = "192.168.0.30";          \/\/IP Adress of Machine running MQTT Broker$/;"	v
-MQTT_SUBSCRIBE_TOPIC	config.h	/^const char* MQTT_SUBSCRIBE_TOPIC = "nextion-in";    \/\/Topic to subscribe at mqtt for message reception$/;"	v
-MQTT_USER	config.h	/^const char* MQTT_USER = "pi";                      \/\/MQTT Broker User Name$/;"	v
-SKETCH_ID	config.h	/^const char* SKETCH_ID = "nextion";                  \/\/Non-overlaping name of sketch$/;"	v
+ARDUINO_DESC	Makefile	/^ARDUINO_DESC := $(shell find $(ESP_ROOT) -maxdepth 1 -name "*.txt" | sort)$/;"	m
+ARDUINO_ESP_ROOT	Makefile	/^  ARDUINO_ESP_ROOT = $(ARDUINO_ROOT)\/packages\/$(CHIP)$/;"	m
+ARDUINO_LIBS	Makefile	/^    ARDUINO_LIBS := $(shell cygpath -m $(ARDUINO_LIBS))$/;"	m
+ARDUINO_LIBS	Makefile	/^  ARDUINO_LIBS = $(shell grep -o "sketchbook.path=.*" $(ARDUINO_ROOT)\/preferences.txt 2>\/dev\/null | cut -f2- -d=)\/libraries$/;"	m
+ARDUINO_LIB_DIR	Makefile	/^ARDUINO_LIB_DIR = \/home\/justas\/Arduino$/;"	m
+ARDUINO_MK	Makefile	/^ARDUINO_MK = $(BUILD_DIR)\/arduino.mk$/;"	m
+ARDUINO_ROOT	Makefile	/^    ARDUINO_ROOT = $(HOME)\/.arduino15$/;"	m
+ARDUINO_ROOT	Makefile	/^    ARDUINO_ROOT = $(HOME)\/Library\/Arduino15$/;"	m
+ARDUINO_ROOT	Makefile	/^    ARDUINO_ROOT = $(shell cygpath -m $(LOCALAPPDATA)\/Arduino15)$/;"	m
+BOARD	Makefile	/^BOARD = nodemcuv2$/;"	m
+BOARD	Makefile	/^BOARD ?= $(if $(filter $(CHIP), esp32),esp32,generic)$/;"	m
+BOOT_LOADER	Makefile	/^BOOT_LOADER ?= $(ESP_ROOT)\/bootloaders\/eboot\/eboot.elf$/;"	m
+BUILD_DATE	Makefile	/^BUILD_DATE = $(call time_string,"%Y-%m-%d")$/;"	m
+BUILD_DIR	Makefile	/^  BUILD_DIR := $(shell cygpath -m $(BUILD_DIR))$/;"	m
+BUILD_DIR	Makefile	/^BUILD_DIR ?= $(BUILD_ROOT)\/$(MAIN_NAME)_$(BOARD)$/;"	m
+BUILD_INFO_CPP	Makefile	/^BUILD_INFO_CPP = $(BUILD_DIR)\/buildinfo.c++$/;"	m
+BUILD_INFO_H	Makefile	/^BUILD_INFO_H = $(BUILD_DIR)\/buildinfo.h$/;"	m
+BUILD_INFO_OBJ	Makefile	/^BUILD_INFO_OBJ = $(BUILD_INFO_CPP)$(OBJ_EXT)$/;"	m
+BUILD_ROOT	Makefile	/^BUILD_ROOT ?= \/tmp\/mkESP$/;"	m
+BUILD_TIME	Makefile	/^BUILD_TIME = $(call time_string,"%H:%M:%S")$/;"	m
+BuildInfo	Makefile	/^	echo '_tBuildInfo _BuildInfo = {"$(BUILD_DATE)","$(BUILD_TIME)","$(SRC_GIT_VERSION)","$(ESP_ARDUINO_VERSION)"};' >>$(BUILD_INFO_CPP)$/;"	m
+CHIP	Makefile	/^CHIP ?= esp8266$/;"	m
+CMD_LINE	Makefile	/^  CMD_LINE := $(shell ps $$PPID -o command | tail -1)$/;"	m
+CMD_LINE	Makefile	/^  CMD_LINE := $(shell tr "\\0" " " <\/proc\/$$PPID\/cmdline)$/;"	m
+COMP_PATH	Makefile	/^  COMP_PATH := $(lastword $(wildcard $(ARDUINO_ESP_ROOT)\/tools\/xtensa-lx106-elf-gcc\/*))$/;"	m
+CORE_DIR	Makefile	/^CORE_DIR = $(ESP_ROOT)\/cores\/$(CHIP)$/;"	m
+CORE_LIB	Makefile	/^CORE_LIB = $(BUILD_DIR)\/arduino.ar$/;"	m
+CORE_OBJ	Makefile	/^CORE_OBJ := $(patsubst %,$(BUILD_DIR)\/%$(OBJ_EXT),$(notdir $(CORE_SRC)))$/;"	m
+CORE_SRC	Makefile	/^CORE_SRC := $(call find_files,S|c|cpp,$(CORE_DIR))$/;"	m
+C_INCLUDES	Makefile	/^C_INCLUDES := $(foreach dir,$(INCLUDE_DIRS) $(USER_INC_DIRS),-I$(dir))$/;"	m
+DEMO	Makefile	/^  DEMO=1$/;"	m
+DEP_EXT	Makefile	/^DEP_EXT = .d$/;"	m
+DHTPin	config.h	26;"	d
+DHTTYPE	config.h	9;"	d
+ESPTOOL	Makefile	/^ESPTOOL ?= $(shell which esptool.py 2>\/dev\/null || which esptool 2>\/dev\/null)$/;"	m
+ESPTOOL_COM	Makefile	/^    ESPTOOL_COM = $(ESPTOOL)$/;"	m
+ESPTOOL_PATH	Makefile	/^  ESPTOOL_PATH := $(lastword $(wildcard $(ARDUINO_ESP_ROOT)\/tools\/esptool\/*))$/;"	m
+ESPTOOL_PATTERN	Makefile	/^ESPTOOL_PATTERN = echo Using: $(UPLOAD_PORT) @ $(UPLOAD_SPEED) && "$(ESPTOOL_COM)" --baud=$(UPLOAD_SPEED) --port $(UPLOAD_PORT) --chip $(CHIP)$/;"	m
+ESP_ADDR	Makefile	/^ESP_ADDR ?= ESP_123456$/;"	m
+ESP_ARDUINO_VERSION	Makefile	/^  ESP_ARDUINO_VERSION := $(notdir $(ESP_ROOT))$/;"	m
+ESP_ARDUINO_VERSION	Makefile	/^  ESP_ARDUINO_VERSION = $(call git_description,$(ESP_ROOT))$/;"	m
+ESP_LIBS	Makefile	/^ESP_LIBS = $(ESP_ROOT)\/libraries$/;"	m
+ESP_PORT	Makefile	/^ESP_PORT ?= 8266$/;"	m
+ESP_PWD	Makefile	/^ESP_PWD ?= 123$/;"	m
+ESP_ROOT	Makefile	/^  ESP_ROOT := $(lastword $(wildcard $(ARDUINO_ESP_ROOT)\/hardware\/$(CHIP)\/*))$/;"	m
+FLASH_DEF	Makefile	/^FLASH_DEF ?= $(shell cat $(ESP_ROOT)\/boards.txt | perl -e 'while (<>) {if (\/^$(BOARD)\\.$(FLASH_DEF_MATCH)\/){ print "$$1"; exit;}}')$/;"	m
+FLASH_DEF_MATCH	Makefile	/^FLASH_DEF_MATCH = $(if $(filter $(CHIP), esp32),build\\.flash_size=(\\S+),menu\\.FlashSize\\.([^\\.]+)=(.+))$/;"	m
+FLASH_FILE	Makefile	/^FLASH_FILE ?= $(BUILD_DIR)\/esp_flash.bin$/;"	m
+FS_DIR	Makefile	/^FS_DIR ?= $(dir $(SKETCH))data$/;"	m
+FS_IMAGE	Makefile	/^FS_IMAGE = $(BUILD_DIR)\/FS.spiffs$/;"	m
+FS_REST_DIR	Makefile	/^FS_REST_DIR ?= $(BUILD_DIR)\/file_system$/;"	m
+FS_UPLOAD_COM	Makefile	/^    FS_UPLOAD_COM = $(ESPTOOL_PATTERN) -a soft_reset write_flash $(SPIFFS_START) $(FS_IMAGE)$/;"	m
+HOSTNAME	config.h	10;"	d
+HTTP_ADDR	Makefile	/^HTTP_ADDR ?= ESP_123456$/;"	m
+HTTP_PWD	Makefile	/^HTTP_PWD ?= user$/;"	m
+HTTP_TOOL	Makefile	/^HTTP_TOOL ?= curl$/;"	m
+HTTP_URI	Makefile	/^HTTP_URI ?= \/update$/;"	m
+HTTP_USR	Makefile	/^HTTP_USR ?= password$/;"	m
+IGNORE_PATTERN	Makefile	/^IGNORE_PATTERN := $(foreach dir,$(EXCLUDE_DIRS),$(dir)\/%)$/;"	m
+IGNORE_STATE	Makefile	/^IGNORE_STATE := $(if $(filter $(MAKECMDGOALS), help clean dump_flash restore_flash list_boards),1,)$/;"	m
+INT_PIN	config.h	24;"	d
+L0	config.h	15;"	d
+L1	config.h	16;"	d
+L2	config.h	17;"	d
+L3	config.h	18;"	d
+L4	config.h	19;"	d
+L5	config.h	20;"	d
+L6	config.h	21;"	d
+L7	config.h	22;"	d
+LIBS	Makefile	/^  LIBS := $(shell perl -e 'use File::Find;@d = split(" ", shift);while (<>) {$$f{"$$1"} = 1 if \/^\\s*\\#include\\s+[<"]([^>"]+)\/;}find(sub {if ($$f{$$_}){print $$File::Find::dir," ";$$f{$$_}=0;}}, @d);' \\$/;"	m
+LWIP_VARIANT	Makefile	/^LWIP_VARIANT ?= $(shell cat $(ESP_ROOT)\/boards.txt | perl -e 'while (<>) {if (\/^$(BOARD)\\.menu\\.LwIPVariant\\.([^\\.=]+)=\/){ print "$$1"; exit;}}')$/;"	m
+MAIN_EXE	Makefile	/^MAIN_EXE = $(BUILD_DIR)\/$(MAIN_NAME).bin$/;"	m
+MAIN_NAME	Makefile	/^MAIN_NAME := $(basename $(notdir $(SKETCH)))$/;"	m
+MEM_USAGE	Makefile	/^define MEM_USAGE$/;"	m
+MKSPIFFS_PATH	Makefile	/^  MKSPIFFS_PATH := $(lastword $(wildcard $(ARDUINO_ESP_ROOT)\/tools\/mkspiffs\/*))$/;"	m
+MKSPIFFS_PATH	Makefile	/^  MKSPIFFS_PATH := $(lastword $(wildcard $(ESP_ROOT)\/tools\/mkspiffs\/*))$/;"	m
+OBJ_EXT	Makefile	/^OBJ_EXT = .o$/;"	m
+OS	Makefile	/^OS ?= $(shell uname -s)$/;"	m
+OTA_TOOL	Makefile	/^OTA_TOOL ?= $(TOOLS_ROOT)\/espota.py$/;"	m
+PCF_IN_ADDRESS	config.h	7;"	d
+PCF_OUT_ADDRESS	config.h	8;"	d
+PREV_STATE_INF	Makefile	/^  PREV_STATE_INF := $(if $(wildcard $(STATE_LOG)),$(shell cat $(STATE_LOG)),$(STATE_INF))$/;"	m
+SCL_PIN	config.h	12;"	d
+SDA_PIN	config.h	11;"	d
+SDK_ROOT	Makefile	/^SDK_ROOT = $(ESP_ROOT)\/tools\/sdk$/;"	m
+SKETCH	Makefile	/^  SKETCH := $(if $(filter $(CHIP), esp32),$(ESP_LIBS)\/WiFi\/examples\/WiFiScan\/WiFiScan.ino,$(ESP_LIBS)\/ESP8266WebServer\/examples\/HelloServer\/HelloServer.ino)$/;"	m
+SKETCH	Makefile	/^  SKETCH := $(shell cygpath -m $(SKETCH))$/;"	m
+SKETCH	Makefile	/^SKETCH = svetaine.ino$/;"	m
+SKETCH	Makefile	/^SKETCH ?= $(wildcard *.ino)$/;"	m
+SKETCH_DIR	Makefile	/^SKETCH_DIR = $(dir $(SKETCH))$/;"	m
 SKETCH_VERSION	config.h	/^const char* SKETCH_VERSION = "0.1";                \/\/Sketch version$/;"	v
-WIFI_PASSWORD	config.h	/^const char* WIFI_PASSWORD = "bukvyras";$/;"	v
-WIFI_SSID	config.h	/^const char* WIFI_SSID = "prapisai_gulta";$/;"	v
-db_array_default_value	config.h	/^int db_array_default_value = 0;                    \/\/default value to write in database e.g. default gpio state$/;"	v
+SRC_GIT_VERSION	Makefile	/^SRC_GIT_VERSION := $(call git_description,$(dir $(SKETCH)))$/;"	m
+START_TIME	Makefile	/^START_TIME := $(shell perl -e "print time();")$/;"	m
+STATE_INF	Makefile	/^  STATE_INF := $(strip $(foreach par,$(CMD_LINE),$(if $(findstring =,$(par)),$(par),))) \\$/;"	m
+STATE_LOG	Makefile	/^  STATE_LOG := $(BUILD_DIR)\/state.txt$/;"	m
+STATE_SAVE	Makefile	/^  STATE_SAVE := $(shell mkdir -p $(BUILD_DIR) ; echo '$(STATE_INF)' >$(STATE_LOG))$/;"	m
+SW_SER_RX	config.h	13;"	d
+SW_SER_TX	config.h	14;"	d
+TOOLS_ROOT	Makefile	/^TOOLS_ROOT = $(ESP_ROOT)\/tools$/;"	m
+UPLOAD_COM	Makefile	/^    UPLOAD_COM = $(ESPTOOL_PATTERN) -a soft_reset write_flash 0x00000 $(BUILD_DIR)\/$(MAIN_NAME).bin$/;"	m
+UPLOAD_PORT	Makefile	/^UPLOAD_PORT := $(if $(UPLOAD_PORT),$(UPLOAD_PORT),\/dev\/ttyS0)$/;"	m
+UPLOAD_PORT	Makefile	/^UPLOAD_PORT ?= $(shell ls -1tr \/dev\/ttyUSB* 2>\/dev\/null | tail -1)$/;"	m
+UPLOAD_VERB	Makefile	/^UPLOAD_VERB ?= -v$/;"	m
+USER_DIRS	Makefile	/^USER_DIRS := $(sort $(dir $(USER_SRC)))$/;"	m
+USER_INC	Makefile	/^USER_INC := $(filter-out $(IGNORE_PATTERN),$(call find_files,h,$(SKETCH_DIR) $(dir $(LIBS))))$/;"	m
+USER_INC_DIRS	Makefile	/^USER_INC_DIRS := $(sort $(dir $(USER_INC)))$/;"	m
+USER_OBJ	Makefile	/^USER_OBJ := $(subst .ino,_.cpp,$(patsubst %,$(BUILD_DIR)\/%$(OBJ_EXT),$(notdir $(USER_SRC))))$/;"	m
+USER_SRC	Makefile	/^USER_SRC := $(SKETCH) $(filter-out $(IGNORE_PATTERN),$(call find_files,S|c|cpp,$(SKETCH_DIR) $(LIBS)))$/;"	m
+WIFI_PASSWORD	config.h	/^const char* WIFI_PASSWORD = "turekbabkiu";$/;"	v
+WIFI_SSID	config.h	/^const char* WIFI_SSID = "Stotis";$/;"	v
 db_array_value	init.h	/^unsigned long db_array_value[20];$/;"	v
+echo	Makefile	/^	echo == Files ==$/;"	m
 espClient	init.h	/^WiFiClient espClient;$/;"	v
+find_files	Makefile	/^  find_files = $(shell find $2 -regextype posix-egrep -regex ".*\\.($1)")$/;"	m
+find_files	Makefile	/^  find_files = $(shell find -E $2 -regex ".*\\.($1)")$/;"	m
+git_description	Makefile	/^git_description = $(shell git -C  $(1) describe --tags --always --dirty 2>\/dev\/null || echo Unknown)$/;"	m
 mqtt_reconnect_time	init.h	/^long mqtt_reconnect_time = 0L;$/;"	v
 mqtt_reconnect_tries	init.h	/^int mqtt_reconnect_tries = 0;$/;"	v
 scheduled_reboot	init.h	/^boolean scheduled_reboot = false;$/;"	v
+this	Makefile	/^	echo "                         detected. If this is not enough, define this"$/;"	m
+time_string	Makefile	/^time_string = $(shell date +$(1))$/;"	m
 wifi_check_time	init.h	/^long wifi_check_time = 15000L;$/;"	v
 wifi_reconnect_time	init.h	/^long wifi_reconnect_time = 0L;$/;"	v
 wifi_reconnect_tries	init.h	/^int wifi_reconnect_tries = 0;$/;"	v

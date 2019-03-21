@@ -30,6 +30,7 @@ LIBS += $(ESP_ROOT)/libraries/ESP8266WiFi
 LIBS += $(ESP_ROOT)/libraries/Wire
 LIBS += $(ESP_ROOT)/libraries/SoftwareSerial
 LIBS += $(ARDUINO_LIB_DIR)/libraries/NeoNextion
+LIBS += $(ARDUINO_LIB_DIR)/libraries/ITEADLIB_Arduino_Nextion
 LIBS += $(ARDUINO_LIB_DIR)/libraries/DHT_sensor_library_for_ESPx
 LIBS += $(ARDUINO_LIB_DIR)/libraries/Time
 LIBS += $(ARDUINO_LIB_DIR)/libraries/SimpleTimer
