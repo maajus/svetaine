@@ -8,6 +8,8 @@ const char* WIFI_PASSWORD = "turekbabkiu";
 #define PCF_OUT_ADDRESS 0x39
 #define DHTTYPE DHT22   // DHT 11
 #define HOSTNAME "svetaine"
+#define TCP_PORT 5555
+#define UPDATE_INTERVAL 30000
 #define SDA_PIN 14 
 #define SCL_PIN 12
 #define SW_SER_RX 4

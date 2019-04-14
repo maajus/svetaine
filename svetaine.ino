@@ -7,20 +7,19 @@
 #include <time.h>
 #include <Time.h>
 #include <Wire.h>
-#include <SimpleTimer.h>
 #include "DHTesp.h"
 
-#define DEBUG
+//#define DEBUG
 
 DHTesp dht;
-WiFiServer server(5555);
+WiFiServer server(TCP_PORT);
 WiFiClient wifi_client;
-SimpleTimer timer;
 // set up a new serial port
 SoftwareSerial my_serial =  SoftwareSerial(SW_SER_RX, SW_SER_TX);
 
 
 
+uint64_t update_timer_time = 0;
 float humidity = -1;
 float temp = -1;
 uint8_t Data = 0;
@@ -116,7 +115,6 @@ void keeplive()
         wifi_reconnect_time = millis();
         connectWiFi();
     }
-    delay(1);
 }
 
 
@@ -143,7 +141,7 @@ void update_info(){
     /*time_t now = time(nullptr);*/
     /*setTime(now);*/
 
-    my_serial.print(Data);
+    my_serial.write(Data);
 
     float Humi = dht.getHumidity();
     float Temp = dht.getTemperature();
@@ -179,14 +177,11 @@ void setup() {
     pinMode(16, OUTPUT);
     digitalWrite(16, HIGH);
     Serial.begin(9600);
-    //Serial.swap();
-    //SPIFFS.begin();
+    my_serial.begin(9600);
     WiFi.mode(WIFI_STA);
     pinMode(INT_PIN, INPUT_PULLUP);
 
     attachInterrupt(INT_PIN, interrupt, FALLING);
-
-    timer.setInterval(15000, update_info);//set timer for updating temp
     Wire.begin(SDA_PIN,SCL_PIN);//start i2c
     /*PCF_write8(0); //all ssr off*/
     PCF_write8(PCF_IN_ADDRESS,0x0); //all ssr off*/
@@ -207,6 +202,7 @@ void setup() {
     }
     /*Serial.println("");*/
     dht.setup(DHTPin,DHTesp::DHT22); // data pin 2
+    update_timer_time = millis();
     update_info();
 }
 
@@ -222,49 +218,56 @@ void serial_listen(){
 
             if(req == 'L'){
                 PCF_toggle(my_serial.parseInt());
-                my_serial.print(Data);
+                my_serial.write(Data);
                 return;
             }
             if(req == 'A'){
                 char buf [30];
                 sprintf (buf, "S%2.1f_%2.1f_%d\0",
                         temp,humidity,Data&0xff);
-                /*Serial.write((const char*)&buf[0],(size_t)(30));*/
                 my_serial.print(buf);
                 return;
             }
             if(req == 'J'){
                 PCF_toggle_all(my_serial.parseInt());
-                my_serial.print(Data);
+                my_serial.write(Data);
                 return;
             }
             if(req == 'N'){
                 PCF_write8(PCF_OUT_ADDRESS,0x00);
-                my_serial.print(Data);
+                my_serial.write(Data);
                 return;
             }
             if(req == 'Y'){
                 PCF_write8(PCF_OUT_ADDRESS,0xFF);
-                my_serial.print(Data);
+                my_serial.write(Data);
                 return;
             }
-
-
 
             while(my_serial.read()!=-1);
     }
 }
+
 
 /*******************************
   Loop Function
  *******************************/
 void loop()
 {
-    /*timer.run();*/
+
+int time = millis();
     tcp_listen();
     keeplive();   //necessary to call keep alive for proper functioning
-    timer.run();
     serial_listen();
+
+    /*Serial.println(millis()-time);*/
+
+    //update info every UPDATE_INTERVAL
+    if(millis()-update_timer_time >= UPDATE_INTERVAL){
+        update_info();
+        update_timer_time = millis();
+    }
+
 
 }
 

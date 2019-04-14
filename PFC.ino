@@ -80,6 +80,7 @@ void interrupt(){
     /*Serial.print("Togle pin : ");*/
     /*Serial.println(pin_num);*/
     PCF_toggle(pin_num);
+    my_serial.write(Data);
 
 }
 
