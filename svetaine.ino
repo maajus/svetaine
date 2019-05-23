@@ -214,37 +214,42 @@ void serial_listen(){
 
        // read data from the connected client
         if (Serial.available() > 0) {
-            char req = Serial.read();
+            /*char req = Serial.read();*/
 
-            if(req == 'L'){
-                PCF_toggle(Serial.parseInt());
-                Serial.write(Data);
-                return;
-            }
-            if(req == 'A'){
-                char buf [30];
-                sprintf (buf, "S%2.1f_%2.1f_%d\0",
-                        temp,humidity,Data&0xff);
-                Serial.print(buf);
-                return;
-            }
-            if(req == 'J'){
-                PCF_toggle_all(Serial.parseInt());
-                Serial.write(Data);
-                return;
-            }
-            if(req == 'N'){
-                PCF_write8(PCF_OUT_ADDRESS,0x00);
-                Serial.write(Data);
-                return;
-            }
-            if(req == 'Y'){
-                PCF_write8(PCF_OUT_ADDRESS,0xFF);
-                Serial.write(Data);
-                return;
-            }
+            uint8_t data = Serial.read();
+            PCF_write8(PCF_OUT_ADDRESS,data);
+            Serial.write(data);
 
-            while(Serial.read()!=-1);
+
+            /*if(req == 'L'){*/
+                /*PCF_toggle(Serial.parseInt());*/
+                /*Serial.write(Data);*/
+                /*return;*/
+            /*}*/
+            /*if(req == 'A'){*/
+                /*char buf [30];*/
+                /*sprintf (buf, "S%2.1f_%2.1f_%d\0",*/
+                        /*temp,humidity,Data&0xff);*/
+                /*Serial.print(buf);*/
+                /*return;*/
+            /*}*/
+            /*if(req == 'J'){*/
+                /*PCF_toggle_all(Serial.parseInt());*/
+                /*Serial.write(Data);*/
+                /*return;*/
+            /*}*/
+            /*if(req == 'N'){*/
+                /*PCF_write8(PCF_OUT_ADDRESS,0x00);*/
+                /*Serial.write(Data);*/
+                /*return;*/
+            /*}*/
+            /*if(req == 'Y'){*/
+                /*PCF_write8(PCF_OUT_ADDRESS,0xFF);*/
+                /*Serial.write(Data);*/
+                /*return;*/
+            /*}*/
+
+            /*while(Serial.read()!=-1);*/
     }
 }
 
