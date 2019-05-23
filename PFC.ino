@@ -1,6 +1,16 @@
 /*******************************
   Driving output pins
  *******************************/
+uint8_t in2outRemap[8] = {
+    0,
+    1,
+    2,
+    3,
+    4,
+    7,
+    6,
+    5,
+};
 
 
 uint8_t PCF_read8(uint8_t address)
@@ -79,8 +89,8 @@ void interrupt(){
 
     /*Serial.print("Togle pin : ");*/
     /*Serial.println(pin_num);*/
-    PCF_toggle(pin_num);
-    my_serial.write(Data);
+    PCF_toggle(in2outRemap[pin_num]);
+    Serial.write(Data);
 
 }
 

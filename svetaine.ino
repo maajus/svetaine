@@ -15,7 +15,7 @@ DHTesp dht;
 WiFiServer server(TCP_PORT);
 WiFiClient wifi_client;
 // set up a new serial port
-SoftwareSerial my_serial =  SoftwareSerial(SW_SER_RX, SW_SER_TX);
+/*SoftwareSerial my_serial =  SoftwareSerial(SW_SER_RX, SW_SER_TX);*/
 
 
 
@@ -141,7 +141,7 @@ void update_info(){
     /*time_t now = time(nullptr);*/
     /*setTime(now);*/
 
-    my_serial.write(Data);
+    Serial.write(Data);
 
     float Humi = dht.getHumidity();
     float Temp = dht.getTemperature();
@@ -177,7 +177,7 @@ void setup() {
     pinMode(16, OUTPUT);
     digitalWrite(16, HIGH);
     Serial.begin(9600);
-    my_serial.begin(9600);
+    /*my_serial.begin(9600);*/
     WiFi.mode(WIFI_STA);
     pinMode(INT_PIN, INPUT_PULLUP);
 
@@ -213,38 +213,38 @@ void setup() {
 void serial_listen(){
 
        // read data from the connected client
-        if (my_serial.available() > 0) {
-            char req = my_serial.read();
+        if (Serial.available() > 0) {
+            char req = Serial.read();
 
             if(req == 'L'){
-                PCF_toggle(my_serial.parseInt());
-                my_serial.write(Data);
+                PCF_toggle(Serial.parseInt());
+                Serial.write(Data);
                 return;
             }
             if(req == 'A'){
                 char buf [30];
                 sprintf (buf, "S%2.1f_%2.1f_%d\0",
                         temp,humidity,Data&0xff);
-                my_serial.print(buf);
+                Serial.print(buf);
                 return;
             }
             if(req == 'J'){
-                PCF_toggle_all(my_serial.parseInt());
-                my_serial.write(Data);
+                PCF_toggle_all(Serial.parseInt());
+                Serial.write(Data);
                 return;
             }
             if(req == 'N'){
                 PCF_write8(PCF_OUT_ADDRESS,0x00);
-                my_serial.write(Data);
+                Serial.write(Data);
                 return;
             }
             if(req == 'Y'){
                 PCF_write8(PCF_OUT_ADDRESS,0xFF);
-                my_serial.write(Data);
+                Serial.write(Data);
                 return;
             }
 
-            while(my_serial.read()!=-1);
+            while(Serial.read()!=-1);
     }
 }
 

@@ -47,7 +47,7 @@ void tcp_listen(){
             }
 
 
-            while(wifi_client.read()!=-1);
+            //while(wifi_client.read()!=-1);
             /*my_serial.write(Data);*/
 
         }
