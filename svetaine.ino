@@ -29,15 +29,6 @@ int wifi_reconnect_tries = 0;
 long wifi_reconnect_time = 0L;
 long wifi_check_time = 15000L;
 
-//Database
-
-unsigned long db_array_value[20];
-
-//Reboot Scheduler
-boolean scheduled_reboot = false;
-
-
-
 
 /*******************************
   Connect to WiFi network
@@ -45,6 +36,7 @@ boolean scheduled_reboot = false;
 
 void connectWiFi()
 {
+
     WiFi.hostname(HOSTNAME);
     ++wifi_reconnect_tries;
     boolean networkScan = false;
@@ -194,12 +186,11 @@ void setup() {
     server.begin();
 
     //configure ntp server and get time
-    configTime(3 * 3600, 0, "pool.ntp.org", "time.nist.gov");
-    /*Serial.println("\nWaiting for time");*/
-    while (!time(nullptr)) {
-        /*Serial.print(".");*/
-        delay(1000);
-    }
+    /*configTime(3 * 3600, 0, "pool.ntp.org", "time.nist.gov");*/
+    /*while (!time(nullptr)) {*/
+        /*delay(1000);*/
+    /*}*/
+
     /*Serial.println("");*/
     dht.setup(DHTPin,DHTesp::DHT22); // data pin 2
     update_timer_time = millis();
@@ -260,18 +251,16 @@ void serial_listen(){
 void loop()
 {
 
-int time = millis();
-    tcp_listen();
     keeplive();   //necessary to call keep alive for proper functioning
     serial_listen();
-
-    /*Serial.println(millis()-time);*/
+    tcp_listen();
 
     //update info every UPDATE_INTERVAL
     if(millis()-update_timer_time >= UPDATE_INTERVAL){
         update_info();
         update_timer_time = millis();
     }
+    delay(100);
 
 
 }
