@@ -28,7 +28,9 @@ uint8_t Data = 0;
 int wifi_reconnect_tries = 0;
 long wifi_reconnect_time = 0L;
 long wifi_check_time = 15000L;
+uint8_t DataChanged = false;
 
+void ICACHE_RAM_ATTR interrupt();
 
 /*******************************
   Connect to WiFi network
@@ -132,29 +134,22 @@ void update_info(){
 
     /*time_t now = time(nullptr);*/
     /*setTime(now);*/
-
-    Serial.write(Data);
-
-    float Humi = dht.getHumidity();
-    float Temp = dht.getTemperature();
+    humidity = dht.getHumidity();
+    temp = dht.getTemperature();
 
 #ifdef DEBUG
     Serial.print(dht.getStatusString());
     Serial.print("\n");
-    Serial.print(Humi, 3);
+    Serial.print(humidity, 3);
     Serial.print("\n");
-    Serial.print(Temp, 3);
+    Serial.print(temp, 3);
     Serial.print("\n");
 #endif
 
     // Check if any reads failed and exit early (to try again).
-    if (isnan(Humi) || isnan(Temp)) {
+    if (dht.getStatus()) {
         humidity = -1;
         temp = -1;
-    }
-    else{
-        humidity = Humi;
-        temp = Temp;
     }
 
 }
@@ -194,6 +189,8 @@ void setup() {
     /*Serial.println("");*/
     dht.setup(DHTPin,DHTesp::DHT22); // data pin 2
     update_timer_time = millis();
+    
+    Serial.write(Data);
     update_info();
 }
 
@@ -240,7 +237,7 @@ void serial_listen(){
                 /*return;*/
             /*}*/
 
-            /*while(Serial.read()!=-1);*/
+            while(Serial.read()!=-1);
     }
 }
 
@@ -260,10 +257,17 @@ void loop()
         update_info();
         update_timer_time = millis();
     }
+
+    if(DataChanged){
+        Serial.write(Data);
+        DataChanged = false;
+    }
+
     delay(100);
 
 
 }
+
 
 /*******************************
   End of the file

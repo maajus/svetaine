@@ -1,7 +1,6 @@
-/*******************************
-  Driving output pins
- *******************************/
+
 uint8_t in2outRemap[8] = {
+
     0,
     1,
     2,
@@ -11,6 +10,10 @@ uint8_t in2outRemap[8] = {
     6,
     5,
 };
+
+/*******************************
+  Driving output pins
+ *******************************/
 
 
 uint8_t PCF_read8(uint8_t address)
@@ -87,10 +90,9 @@ void interrupt(){
     uint8_t pin_num = PCF_detect_low_pin();
     if(pin_num == 8) return;
 
-    /*Serial.print("Togle pin : ");*/
-    /*Serial.println(pin_num);*/
     PCF_toggle(in2outRemap[pin_num]);
-    Serial.write(Data);
+    DataChanged = true;
 
 }
+
 
